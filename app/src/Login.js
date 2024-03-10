@@ -1,23 +1,15 @@
-/* eslint-disable no-unused-vars */
-// Disables unused variable warnings
-
 import React, {useEffect, useState} from 'react';
+import { useNavigate } from 'react-router-dom';
 
-function Login() {
+function Login({ setToken, removeToken }) { // Receive the setToken and removeToken functions as props
+    const navigate = useNavigate();
     const [login, setLogin] = useState('');
     const [pass, setPass] = useState('');
-    const [canLogin, setCanLogin] = useState(false);
 
-    // Called each time the dependencies change
     useEffect(() => {
-        console.log("login", login);
-        console.log("pass", pass);
-    }, [login, pass]);
+        removeToken();
+    }, [removeToken]);
 
-    // Called when login changes
-        // event = event object that changed
-        // target = HTML element that triggered the change
-        // value = value of the HTML element
     const handleLoginChange = (event) => {
         setLogin(event.target.value);
     };
@@ -26,23 +18,23 @@ function Login() {
         setPass(event.target.value);
     };
 
-    // Called when login button is clicked
     const handleSubmit = (event) => {
-        event.preventDefault(); // Stop the default action of an event from happening. (Here, it prevents the page from refreshing)
+        event.preventDefault();
         if (login === 'admin' && pass === 'admin') {
-            setCanLogin(true);
-            console.log("Can login");
+            const token = 'USER_LOGGED';
+            setToken(token); 
+            navigate('/home');     
         }
         else {
-            setCanLogin(false);
+            alert("Invalid username or password");
         }
     };
 
     return (
         <div className="container mt-5">
+            <h2 className="text-center title_consolas mb-2">This is not a responsive webpage</h2>
             <div className="row justify-content-center">
                 <div className="col-8">
-                    <h2 className="text-center title_consolas mb-2">This is not a responsive webpage</h2>
                     <div className="card mt-5">
                         <div className="card-body">
                             <div className="row justify-content-center">

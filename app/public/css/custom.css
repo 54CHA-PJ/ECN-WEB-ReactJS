@@ -1,9 +1,9 @@
 .body_consolas {
-  font-family: Consolas, monospace;
+  font-family: Monaco, monospace;
 }
 
 .title_consolas {
-  font-family: Cambria, Cochin, Georgia, Times, "Times New Roman", serif;
+  font-family: Monaco, monospace;
   color: #820bad;
   color: #e6dcdc;
 }
@@ -14,7 +14,7 @@
 }
 
 .container {
-  max-width: 1000px;
+  max-width: 800px;
 }
 
 .btn-block {
@@ -26,6 +26,22 @@
 
 .bg-dark {
   background-color: #440a58 !important;
+}
+
+.logo-bg-dark {
+  background-color: #440a58 !important;
+}
+
+.logo-bg-dark:hover {
+  background-color: #820bad !important;
+}
+
+.bg-primary {
+  background-color: #820bad !important;
+}
+
+.bg-lighter {
+  background-color: #f0f3e0 !important;
 }
 
 .btn-primary {
@@ -88,17 +104,28 @@
   height: 20px;
 }
 
+.logo {
+  width: 30px;
+  height: auto;
+}
+
 .navbar-custom {
   background-color: #000000 !important;
 }
 
-.custom-brand {
+.navbar-brand {
   color: #e6dcdc !important;
-  font-family: Cambria, Cochin, Georgia, Times, "Times New Roman", serif;
+}
+.navbar-brand:hover {
+  color: #dfeba5 !important;
 }
 
-.custom-link {
+.nav-link {
   color: #eec0f1 !important;
+}
+.nav-link:hover {
+  color: #dfeba5 !important;
+  font-weight: bold;
 }
 
 /*# sourceMappingURL=custom.css.map */
