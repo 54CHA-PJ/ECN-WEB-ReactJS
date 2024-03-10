@@ -1,8 +1,8 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
 
-import logoImage from './assets/logo_w.png';
-import logoutImage from './assets/logout.png';
+import logoImage from '../assets/logo_w.png';
+import logoutImage from '../assets/logout.png';
 
 function Navbar() {
     const navigate = useNavigate();

@@ -1,8 +1,10 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useContext } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { TokenContext } from '../Context/TokenContext';
 
-function Users({ getToken }) {
+const Users = () => {
     const navigate = useNavigate();
+    const { getToken } = useContext(TokenContext);
 
     useEffect(() => {
         const token = getToken();
@@ -19,7 +21,7 @@ function Users({ getToken }) {
 
     return (
         <div className="container mt-5">
-            <h1 class="mb-5 text-center title_consolas">User Database</h1>
+            <h1 className="mb-5 text-center title_consolas">User Database</h1>
             <div className="card">
                 <div className="card-body">
                     <table className="table table-striped">

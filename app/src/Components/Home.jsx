@@ -1,17 +1,18 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useContext } from 'react';
 import { useNavigate } from 'react-router-dom';
-import libraryImage from './assets/library.png';
+import libraryImage from '../assets/library.png';
+import { TokenContext } from '../Context/TokenContext';
 
-function Home({ getToken }) {
-
+const Home = () => {
     const navigate = useNavigate();
+    const { getToken } = useContext(TokenContext);
 
     useEffect(() => {
         const token = getToken();
-            if (!token) {
-            navigate('/');
-            }
-        }, [getToken, navigate]);
+        if (!token) {
+        navigate('/');
+        }
+    }, [getToken, navigate]);
 
     return (
         <div className="container mt-5 mb-5">

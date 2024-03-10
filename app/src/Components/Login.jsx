@@ -1,8 +1,10 @@
-import React, {useEffect, useState} from 'react';
+import React, {useEffect, useState, useContext} from 'react';
 import { useNavigate } from 'react-router-dom';
+import { TokenContext } from '../Context/TokenContext';
 
-function Login({ setToken, removeToken }) { // Receive the setToken and removeToken functions as props
+const Login = () => {
     const navigate = useNavigate();
+    const { setToken, removeToken } = useContext(TokenContext);
     const [login, setLogin] = useState('');
     const [pass, setPass] = useState('');
 
