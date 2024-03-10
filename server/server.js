@@ -4,7 +4,7 @@ const express = require('express');
 const pg = require("pg");
 const app = express();
 
-var conString = DB_CONNECTION;
+var conString = process.env.DB_CONNECTION;
 
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
