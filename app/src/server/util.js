@@ -11,7 +11,9 @@ async function postServiceData(method, params) {
             body: JSON.stringify(params)
         });
         const data = await response.json();
-        return await Promise.resolve(data);
+        const res = await Promise.resolve(data);
+        console.log(res);
+        return(res);
     } catch (error) {
         console.log(error);
         return error;

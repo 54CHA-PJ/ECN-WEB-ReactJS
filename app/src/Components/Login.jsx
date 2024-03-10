@@ -1,12 +1,14 @@
 import React, {useEffect, useState, useContext} from 'react';
 import { useNavigate } from 'react-router-dom';
 import { TokenContext } from '../Context/TokenContext';
+import { postServiceData } from '../server/util';
 
 const Login = () => {
     const navigate = useNavigate();
     const { setToken, removeToken } = useContext(TokenContext);
     const [login, setLogin] = useState('');
     const [pass, setPass] = useState('');
+    const [canLogin, setCanLogin] = useState(false);
 
     useEffect(() => {
         removeToken();
@@ -20,16 +22,24 @@ const Login = () => {
         setPass(event.target.value);
     };
 
-    const handleSubmit = (event) => {
+    const checkLogin = async (event) => {
         event.preventDefault();
-        if (login === 'admin' && pass === 'admin') {
+        //console.log(login, pass);
+        const params = {login: login, password: pass};
+        const data = await postServiceData("authenticate", params);
+        if (data.ok === 'SUCCESS') {
+            setCanLogin(true);
             const token = 'USER_LOGGED';
             setToken(token); 
-            navigate('/home');     
-        }
-        else {
+            navigate('/home'); 
+        } else {
             alert("Invalid username or password");
         }
+    };
+    
+    const handleSubmit = (event) => {
+        event.preventDefault();
+        checkLogin(event);
     };
 
     return (

@@ -18,14 +18,9 @@ app.use(function(req, res, next) {
 app.post('/authenticate', (req, res) => {
   const login = req.body.login;
   const password = req.body.password;
-  const isAuthenticated = login === 'admin' && password === 'admin';
-
-  const response = {
-    isAuthenticated,
-    message: isAuthenticated ? 'Authenticated successfully' : 'Invalid login or password'
-  };
-
-  res.send(JSON.stringify(response));
+  const isAuthenticated = login === "admin" && password === "admin";
+  const response = isAuthenticated ? {ok:'SUCCESS'} : {ok:'INVALID'};
+  res.send(response);
 });
 
 // Must be LAST instruction of the file
