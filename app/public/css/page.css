@@ -1,0 +1,140 @@
+:root {
+    --bg_color: #d3d3d3;
+    --font_color:#820bad;
+    --link_color: #2d47da;
+
+    --table_header_color: #eec0f1;
+    --table_bg_color: #f9f9f9;
+    --first_column_color: #fdfad5;
+    --border_color: black;
+
+    --list_item_color: #dbdfbf;
+    --list_item_hover_color: #eec0f1;
+
+    --button_color: #eec0f1;
+    --button_hover_color: rgb(0, 1, 65);
+
+    --container_bg_color: #f9f9f9;
+  }
+
+
+body {
+    background-color: var(--bg_color);
+    font-family: Consolas;
+    font-size: 1em;
+    color: font;
+    text-align: center;
+}
+
+a{
+    color: var(--font_color);
+    text-decoration: none;
+}
+
+a.hover {
+    color: var(--link_color);
+    text-decoration: underline;
+}
+
+
+img.icon {
+    display: inline;
+    height: 20px;
+}
+
+table {
+    border-collapse: collapse;
+    width: 100%;
+}
+
+table, th, td {
+    border: 1px solid var(--border_color);
+}
+
+th, td {
+    padding: 10px;
+}
+
+th {
+    background-color: var(--table_header_color);
+}
+
+td {
+    text-align: center;
+    background-color: var(--table_bg_color);
+}
+
+/* Apply different background color to first column */
+td:first-child {
+    background-color: var(--first_column_color);
+}
+
+ul {
+    list-style-type: none;
+    padding: 0;
+    text-align: center;
+}
+
+li {
+    padding: 10px;
+    margin-bottom: 5px;
+    color: var(--font_color);
+    background-color: var(--list_item_color);
+    border-radius: 5px;
+    width: 200px;
+    text-align: center;
+}
+
+li:hover {
+    background-color: var(--list_item_hover_color);
+    color: var(--font_color);
+    cursor: pointer;
+}
+
+button {
+    background-color: var(--button_color);
+    color: var(--font_color);
+    border: none;
+    border-radius: 5px;
+    padding: 10px;
+    cursor: pointer;
+    font-family: Consolas;
+    font-size: 1em;
+}
+
+button[type="home"] {
+    margin-top: 0px; 
+    margin-bottom: 0px; 
+}
+
+button[type="submit"] {
+    margin-top: 20px; 
+    margin-bottom: 20px; 
+}
+
+
+button:hover {
+    color: blue !important;
+    font: 2em;
+}
+
+.container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    max-width: 600px;
+    margin: auto;
+    margin-top: 20px;
+    padding: 20px;
+    border: 1px solid var(--border_color);
+    border-radius: 10px;
+    background-color: var(--container_bg_color);
+}
+
+.button-container {
+    margin-top: 20px;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-evenly;
+}

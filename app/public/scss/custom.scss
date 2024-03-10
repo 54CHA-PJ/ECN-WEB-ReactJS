@@ -1,0 +1,119 @@
+$primary-color: #820bad;
+$secondary-color: #8f4ba8;
+
+$title-color: #e6dcdc;
+
+$bg-dark: #440a58;
+$bg-darker: #000000;
+
+$btn-red: #af0202;
+$btn-yellow: #f7b500;
+$btn-green: #12a512;
+$btn-action: #eec0f1;
+$btn-action-hover: #f0d7e1;
+
+
+.body_consolas {
+    font-family: Consolas, monospace;
+}
+
+.title_consolas {
+    font-family :Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
+    color: $primary-color;
+    color: $title-color;
+}
+
+.tight-container {
+    margin: auto;
+    max-width: 500px;
+}
+
+.container {
+    max-width: 1000px;
+}
+
+.btn-block {
+    display: inline-block;
+    width: 50%;
+    margin: auto;
+    background-color: $primary-color !important;
+}
+
+.bg-dark {
+    background-color: $bg-dark !important;
+}
+
+.btn-primary {
+    background-color: $primary-color !important;
+    border-color: $primary-color !important;
+}
+
+.btn-primary:hover {
+    background-color: $secondary-color !important;
+    border-color: $secondary-color !important;
+}
+
+.btn-light-primary {
+    background-color: $btn-action!important;
+    border-color: $btn-action !important;
+}
+
+.btn-light-primary:hover {
+    background-color: $btn-action-hover !important;
+    border-color: $btn-action-hover !important;
+}
+
+.btn-light-primary {
+    background-color: $btn-action!important;
+    border-color: $btn-action !important;
+}
+
+.btn-light-primary:hover {
+    background-color: $btn-action-hover !important;
+    border-color: $btn-action-hover !important;
+}
+
+.btn-warning {
+    background-color: $btn-red !important;
+    border-color: $btn-red !important;
+    color: #fff !important; // Add this line
+}
+
+.btn-warning:hover {
+    background-color: $btn-yellow !important;
+    border-color: $btn-yellow !important;
+    color: #000000 !important; // Add this line
+}
+
+.btn-success {
+    background-color: $btn-green !important;
+    border-color: $btn-green !important;
+    color: #fff !important; // Add this line
+}
+
+.list-group-item {
+    border: none;
+    display: flex;
+    align-items: center;
+}
+
+.icon {
+    border: none;
+    width: 20px;
+    height: 20px;
+}
+
+// NAVBAR
+
+.navbar-custom {
+    background-color: $bg-darker !important;
+}
+
+.custom-brand {
+    color: $title-color !important; 
+    font-family :Cambria, Cochin, Georgia, Times, 'Times New Roman', serif
+}
+
+.custom-link {
+    color: $btn-action !important; 
+}

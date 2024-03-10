@@ -1,0 +1,62 @@
+/* style.css */
+.body {
+    background-color: rgba(219, 147, 255, 0.407);
+    font-family: Consolas;
+    font-size: 1em;
+    }
+
+.title {
+    color :rgb(126, 18, 214);
+    font-size: 2em;
+    font-weight: bold;
+    text-shadow: 0 0 10px rgba(242, 255, 0, 0.595);
+    }
+
+.glowing {
+    font-size: 0.5;
+    font-weight: bold;
+    color: white;
+    text-shadow: 0 0 10px rgb(74, 47, 223); 
+}
+
+table {
+    border : 1px solid green;
+    color :forestgreen;
+    }
+
+tr {
+    background-color :white;
+    }
+
+td {
+    border :1px solid rgb(238, 254, 13);
+    }
+
+th {
+    background-color :rgb(173, 11, 213);
+    color :white;
+    }
+
+h1 {
+    margin : 0 0 10px;
+    font-size : 20px;
+    font-weight : bold;
+    color :green;
+    }
+
+p {
+    margin : 5px 0;
+    color : rgb(158, 16, 129);
+    }
+
+a,
+a:focus {
+    color: blue !important;
+    text-decoration: none;
+}
+
+a:hover {
+    color: rgb(229, 255, 0) !important;
+    text-decoration: gray;
+    font: 2em;
+}

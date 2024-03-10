@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Book List</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="bootstrap/css/bootstrap.css">
+    <link rel="stylesheet" href="css/custom.css">
+    <script src="bootstrap/js/bootstrap.min.js"></script>
+    <script src="js/jquery-3.3.1.min.js"></script>
+    <script src="js/main.js"></script>
+</head>
+<body class="bg-dark body_consolas">
+    <nav class="navbar navbar-custom">
+        <div class="container d-flex justify-content-between align-items-center">
+            <div class="d-flex align-items-center">
+                <a class="navbar-brand custom-brand" href="home.html">OFL</a>
+                <div id="navbarNav" class="d-flex">
+                    <a class="nav-link custom-link" href="users.html">Users</a>
+                    <a class="nav-link custom-link" href="books.html">Books</a>
+                    <a class="nav-link custom-link" href="borrow.html">Borrows</a>
+                </div>
+            </div>
+            <div class="d-flex flex-column">
+                <h6 class="text-left title_consolas">Name : Sacha Cruz</h6>
+                <h6 class="text-left title_consolas">ID : Scruz2022</h6>
+            </div>
+        </div>
+    </nav>
+    <div class="container py-5">
+        <h1 class="mb-5 text-center title_consolas">Book Database</h1>
+        <div class="card">
+            <div class="card-body">
+                <table class="table table-striped">
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Title</th>
+                            <th>Author</th>
+                            <th>ISBN</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>1</td>
+                            <td>Book Title 1</td>
+                            <td>Author 1</td>
+                            <td>ISBN 1234567890</td>
+                            <td>
+                                <form action="editBook" method="POST"> 
+                                    <button 
+                                        class="btn btn-light-primary"
+                                        name="edit"
+                                        onClick="editBook2(1, this); return false;">
+                                        <img src="assets/edit.png" alt="Edit" class="icon">
+                                    </button>
+                                    <button 
+                                        class="btn btn-light-primary"
+                                        name="delete"
+                                        onClick="deleteBook2(1,this); return false;">
+                                        <img src="assets/delete.png" alt="Delete" class="icon">
+                                    </button>
+                                </form>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>2</td>
+                            <td>Book Title 2</td>
+                            <td>Author 2</td>
+                            <td>ISBN 0987654321</td>
+                            <td>
+                                <form action="editBook" method="POST">
+                                    <button 
+                                        class="btn btn-light-primary"
+                                        name="edit"
+                                        onClick="editBook2(2, this); return false;">
+                                        <img src="assets/edit.png" alt="Edit" class="icon">
+                                    </button>
+                                    <button 
+                                        class="btn btn-light-primary"
+                                        name="delete"
+                                        onClick="deleteBook2(2,this); return false;">
+                                        <img src="assets/delete.png" alt="Delete" class="icon">
+                                    </button>
+                                </form>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>3</td>
+                            <td>Book Title 3</td>
+                            <td>Author 3</td>
+                            <td>ISBN 9876543210</td>
+                            <td>
+                                <form action="editBook" method="POST">
+                                    <button 
+                                        class="btn btn-light-primary"
+                                        name="edit"
+                                        onClick="editBook2(3, this); return false;">
+                                        <img src="assets/edit.png" alt="Edit" class="icon">
+                                    </button>
+                                    <button 
+                                        class="btn btn-light-primary"
+                                        name="delete"
+                                        onClick="deleteBook2(3,this); return false;">
+                                        <img src="assets/delete.png" alt="Delete" class="icon">
+                                    </button>
+                                </form>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <div class="d-flex justify-content-center mt-3">
+            <a href="home.html" class="btn btn-warning">HOME</a>
+        </div>
+    </div>
+</body>
+</html>
