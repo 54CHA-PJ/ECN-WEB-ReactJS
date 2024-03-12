@@ -5,6 +5,9 @@ import { postServiceData, formatDate, stringToDate } from '../server/util';
 
 // Only for this file
 const formatDateInput = (dateString) => {
+    if (!dateString) {
+        return null;
+    }
     const date = new Date(dateString);
     const year = date.getFullYear();
     const month = String(date.getMonth() + 1).padStart(2, '0');
@@ -50,6 +53,8 @@ const Borrows = () => {
             borrow_date: stringToDate(borrowDate),
             return_date: stringToDate(returnDate)
         };
+
+        console.log('UPDATE:', params);
         try {
             const updateResponse = await postServiceData("updateBorrow", params);
             if (updateResponse && updateResponse.ok === 'SUCCESS') {
@@ -64,13 +69,14 @@ const Borrows = () => {
         }
     };
 
-    const deleteBorrow = async (personId, bookId, borrowDate, returnDate) => {
+    const deleteBorrow = async (personId, bookId, borrowDate) => {
         var params = {
             person_id: personId,
             book_id: bookId,
-            borrow_date: stringToDate(borrowDate),
-            return_date: stringToDate(returnDate)
+            borrow_date: formatDateInput(borrowDate)
         };
+
+        console.log('DELETE:', params);
         try {
             const updateResponse = await postServiceData("deleteBorrow", params);
             if (updateResponse && updateResponse.ok === 'SUCCESS') {
