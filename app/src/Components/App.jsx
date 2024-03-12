@@ -2,6 +2,7 @@ import React, { useContext, useEffect } from 'react';
 import { BrowserRouter as Router, Routes, Route, useLocation } from 'react-router-dom';
 import Login from './Login';
 import Users from './Users';
+import User from './User';
 import Home from './Home';
 import Navbar from './Navbar'; 
 import NotFound from './NotFound';
@@ -25,12 +26,12 @@ function AppRoutes() {
 
   useEffect(() => {
     const token = getToken();
-    console.log("token", token);
+    console.log("TOKEN:", token);
   }, [getToken]);
 
   const location = useLocation();
-  const validPathNames = ["/home", "/users"];
-  const showNavbar = validPathNames.includes(location.pathname); // Hide the Navbar component on the login and not-found pages
+  const validPathNames = ["/home", "/users", "/user/"];
+  const showNavbar = validPathNames.some(path => location.pathname.startsWith(path));
 
   return (
     <>
@@ -39,6 +40,7 @@ function AppRoutes() {
         <Route exact path="/" element={<Login/>} />
         <Route exact path="/home" element={<Home/>} />
         <Route exact path="/users" element={<Users/>} />
+        <Route exact path="/user/*" element={<User/>} />
         <Route path="*" element={<NotFound/>} />
       </Routes>
     </>

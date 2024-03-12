@@ -8,15 +8,19 @@ const Home = () => {
     const { getToken } = useContext(TokenContext);
 
     useEffect(() => {
-        const token = getToken();
-        if (!token) {
-        navigate('/');
+        const tokenString = getToken();
+        const token = JSON.parse(tokenString);
+        if (token.status !== 'USER_LOGGED') {
+            navigate('/');
         }
     }, [getToken, navigate]);
 
+    const tokenString = getToken();
+    const token = JSON.parse(tokenString);
+
     return (
         <div className="container mt-5 mb-5">
-            <h1 className="mb-5 text-center title_consolas">Welcome to the Digital Library</h1>
+            <h1 className="mb-5 text-center title_consolas">Welcome, {token.login}</h1>
             <div className="card" style={{ backgroundColor: '#f0f3e0' }}>
                 <div className="card-body">
                     <p className="text-justify">
@@ -24,7 +28,8 @@ const Home = () => {
                         We strive to provide a welcoming and inclusive environment for all our members. 
                         Come explore, learn, and discover with us.<br /><br />
                         Please note that this is a fictional library and this website is for educational purposes only.
-                        Any resemblance to real products, services, or libraries is purely coincidental. Dont forget to logout after using the library.
+                        Any resemblance to real products or services is coincidental. <br /><br />
+                        Don't forget to logout after using the library !
                     </p>
                     <div className="d-flex justify-content-center">
                         <img src={libraryImage} alt="Library" className="img-fluid w-50" />

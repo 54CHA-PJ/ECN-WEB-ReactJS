@@ -5,14 +5,18 @@ import { postServiceData } from '../server/util';
 
 const Login = () => {
     const navigate = useNavigate();
-    const { setToken, removeToken } = useContext(TokenContext);
+    const { getToken, setToken, removeToken } = useContext(TokenContext);
     const [login, setLogin] = useState('');
     const [pass, setPass] = useState('');
-    const [canLogin, setCanLogin] = useState(false);
 
     useEffect(() => {
-        removeToken();
-    }, [removeToken]);
+        const tokenString = getToken();
+        const token = JSON.parse(tokenString);
+        if (token && token.status === 'USER_LOGGED') {
+            // If the user is already logged in, redirect to home
+            navigate('/home');
+        }
+    }, [getToken, navigate, removeToken]);
 
     const handleLoginChange = (event) => {
         setLogin(event.target.value);
@@ -24,12 +28,10 @@ const Login = () => {
 
     const checkLogin = async (event) => {
         event.preventDefault();
-        //console.log(login, pass);
         const params = {login: login, password: pass};
         const data = await postServiceData("authenticate", params);
         if (data.ok === 'SUCCESS') {
-            setCanLogin(true);
-            const token = 'USER_LOGGED';
+            const token = JSON.stringify({login: login, status:'USER_LOGGED' });
             setToken(token); 
             navigate('/home'); 
         } else {

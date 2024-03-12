@@ -1,23 +1,38 @@
-import React, { useEffect, useContext } from 'react';
+import React, { useEffect, useState, useContext } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { TokenContext } from '../Context/TokenContext';
+import { getServiceData } from '../server/util';
+
+const fetchUsers = async (setUsersFunc) => {
+    try {
+        const data = await getServiceData('users');
+        if (Array.isArray(data)) {
+            setUsersFunc(data);
+        } else {
+            console.error('Unexpected server response:', data);
+        }
+    } catch (error) {
+        console.error(error);
+    }
+};
 
 const Users = () => {
     const navigate = useNavigate();
     const { getToken } = useContext(TokenContext);
+    const [users, setUsers] = useState([]); 
 
     useEffect(() => {
+        // Token check
         const token = getToken();
-            if (!token) {
+        if (!token) {
             navigate('/');
-            }
-        }, [getToken, navigate]);
+        }
+    }, [getToken, navigate]);
 
-    const users = [
-        { id: 1, name: 'Mark', surname: 'Zuckerberg', email: 'mark.zuckerberg@facebook.com' },
-        { id: 2, name: 'Bill', surname: 'Gates', email: 'bill.gates@microsoft.com' },
-        { id: 3, name: 'Elon', surname: 'Musk', email: 'elon.musk@tesla.com' },
-    ];
+    useEffect(() => {
+        // Call the async function
+        fetchUsers(setUsers);
+    }, []);
 
     return (
         <div className="container mt-5">
@@ -29,16 +44,14 @@ const Users = () => {
                             <tr>
                                 <th>ID</th>
                                 <th>Name</th>
-                                <th>Email</th>
                                 <th>Actions</th>
                             </tr>
                         </thead>
                         <tbody>
                             {users.map(user => (
-                                <tr key={user.id}>
-                                    <td>{user.id}</td>
-                                    <td>{user.name} {user.surname}</td>
-                                    <td>{user.email}</td>
+                                <tr key={user.person_id}>
+                                    <td>{user.person_id}</td>
+                                    <td>{user.person_firstname} {user.person_lastname}</td>
                                     <td>
                                         <button className="btn btn-primary mr-2">Edit</button>
                                         <button className="btn btn-danger">Delete</button>

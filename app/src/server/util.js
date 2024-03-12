@@ -12,12 +12,31 @@ async function postServiceData(method, params) {
         });
         const data = await response.json();
         const res = await Promise.resolve(data);
-        console.log(res);
+        console.log('SERVER:', JSON.stringify(res));
         return(res);
     } catch (error) {
-        console.log(error);
+        console.log('SERVER ERROR:',error);
         return error;
     }
 }
 
-export { postServiceData };
+async function getServiceData(method) {
+    try {
+        const response = await fetch(server + "/" + method, {
+            method: 'GET',
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json',
+            },
+        });
+        const data = await response.json();
+        const res = await Promise.resolve(data);
+        console.log('SERVER:', JSON.stringify(res));
+        return(res);
+    } catch (error) {
+        console.log('SERVER ERROR:',error);
+        return error;
+    }
+}
+
+export { postServiceData, getServiceData };

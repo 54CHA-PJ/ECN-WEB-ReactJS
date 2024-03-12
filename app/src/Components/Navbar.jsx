@@ -1,11 +1,18 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { TokenContext } from '../Context/TokenContext';
 
 import logoImage from '../assets/logo_w.png';
 import logoutImage from '../assets/logout.png';
 
 function Navbar() {
     const navigate = useNavigate();
+    const { removeToken } = useContext(TokenContext);
+
+    const handleLogout = () => {
+        removeToken();
+        navigate('/');
+    };
 
     return (
         <nav className="navbar navbar-expand-lg navbar-custom">
@@ -29,7 +36,10 @@ function Navbar() {
             </ul>
             </div>
             <div className="logo-bg-dark rounded">
-            <button className="navbar-brand pl-3" style={{background: 'none', border: 'none', outline: 'none'}} onClick={() => navigate('/')}>
+            <button 
+                className="navbar-brand pl-3" 
+                style={{background: 'none', border: 'none', outline: 'none'}} 
+                onClick={handleLogout}>
                 <img src={logoutImage} alt="Logout" className="logo" />
             </button>
             </div>
