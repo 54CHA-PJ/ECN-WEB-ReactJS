@@ -2,6 +2,7 @@ import React, { useEffect, useState, useContext } from 'react';
 import { TokenContext } from '../Context/TokenContext';
 import { getServiceData } from '../server/util';
 import { useNavigate } from 'react-router-dom';
+import { useParams } from 'react-router-dom'; // Import useParams
 
 const User = () => {
     const navigate = useNavigate();
@@ -9,6 +10,7 @@ const User = () => {
     const [firstName, setFirstName] = useState('');
     const [lastName, setLastName] = useState('');
     const { getToken } = useContext(TokenContext);
+    const { id } = useParams(); // Get the id from the URL
 
     useEffect(() => {
         const tokenString = getToken();
@@ -20,7 +22,9 @@ const User = () => {
 
     const fetchUser = async (id) => {
         try {
-            const user = await getServiceData(`user/${id}`);
+            console.log('Fetching user with ID:', id); // Add this line
+            const request = await getServiceData(`user/${id}`);
+            const user = request[0];
             setUserId(user.person_id || '');
             setFirstName(user.person_firstname || '');
             setLastName(user.person_lastname || '');
@@ -30,8 +34,14 @@ const User = () => {
     };
 
     useEffect(() => {
-        fetchUser(2);
-    }, []);
+        fetchUser(id); // Fetch the user with the id from the URL
+    }, [id]);
+
+    useEffect(() => {
+        if (userId && firstName && lastName) {
+            console.log('USER: (' + userId + ', ' + firstName + ', ' + lastName + ')' );
+        }
+    }, [userId, firstName, lastName]);
 
     const handleSubmit = (event) => {
         event.preventDefault();
@@ -56,13 +66,24 @@ const User = () => {
                             <label htmlFor="lastName">Last Name:</label>
                             <input type="text" id="lastName" className="form-control" value={lastName} onChange={e => setLastName(e.target.value)} />
                         </div>
-                        <button type="submit" className="btn btn-primary btn-block">Save Changes</button>
+                        <div className="d-flex justify-content-center ">
+                            <button 
+                                type="submit" 
+                                className="btn btn-primary mr-5">
+                                Save Changes
+                            </button> 
+                            <button 
+                                type="button" 
+                                className="btn btn-warning ml-5" 
+                                onClick={() => navigate('/users')}> 
+                                Back to Users
+                            </button>
+                        </div>
                     </form>
                 </div>
+
             </div>
-            <div className="d-flex justify-content-center mt-3">
-                <a href="home.html" className="btn btn-warning">HOME</a>
-            </div>
+
         </div>
     );
 };

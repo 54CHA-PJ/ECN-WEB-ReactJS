@@ -40,7 +40,7 @@ function AppRoutes() {
         <Route exact path="/" element={<Login/>} />
         <Route exact path="/home" element={<Home/>} />
         <Route exact path="/users" element={<Users/>} />
-        <Route exact path="/user/*" element={<User/>} />
+        <Route exact path="/user/:id" element={<User/>} />
         <Route path="*" element={<NotFound/>} />
       </Routes>
     </>

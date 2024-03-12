@@ -40,25 +40,47 @@ const Users = () => {
             <div className="card">
                 <div className="card-body">
                     <table className="table table-striped">
-                        <thead>
-                            <tr>
-                                <th>ID</th>
-                                <th>Name</th>
-                                <th>Actions</th>
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Name</th>
+                            <th className="actions">Actions &nbsp;&nbsp;</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {users.map(user => (
+                            <tr key={user.person_id}>
+                                <td>{user.person_id}</td>
+                                <td>{user.person_firstname} {user.person_lastname}</td>
+                                <td className="actions">
+                                <button 
+                                    type="submit" 
+                                    className="btn btn-light-primary"
+                                    onClick={() => navigate(`/user/${user.person_id}`)} // Moved onClick here
+                                >
+                                    <img 
+                                        className="icon"
+                                        src="../assets/edit.png" 
+                                        alt="Edit" 
+                                    />
+                                </button>
+                                &nbsp;
+                                <button 
+                                    type="submit" 
+                                    className="btn btn-light-primary"
+                                    onClick={() => console.log("delete")} // Moved onClick here
+                                >
+                                    <img 
+                                        className="icon"
+                                        src="../assets/delete.png" 
+                                        alt="Edit" 
+                                    />
+                                </button>
+                                &nbsp;
+                                </td>
                             </tr>
-                        </thead>
-                        <tbody>
-                            {users.map(user => (
-                                <tr key={user.person_id}>
-                                    <td>{user.person_id}</td>
-                                    <td>{user.person_firstname} {user.person_lastname}</td>
-                                    <td>
-                                        <button className="btn btn-primary mr-2">Edit</button>
-                                        <button className="btn btn-danger">Delete</button>
-                                    </td>
-                                </tr>
-                            ))}
-                        </tbody>
+                        ))}
+                    </tbody>
                     </table>
                 </div>
             </div>
