@@ -1,12 +1,22 @@
 import React, { useEffect, useState, useContext } from 'react';
-import { useNavigate } from 'react-router-dom';
 import { TokenContext } from '../Context/TokenContext';
 import { getServiceData } from '../server/util';
+import { useNavigate } from 'react-router-dom';
 
 const User = () => {
+    const navigate = useNavigate();
     const [userId, setUserId] = useState('');
     const [firstName, setFirstName] = useState('');
     const [lastName, setLastName] = useState('');
+    const { getToken } = useContext(TokenContext);
+
+    useEffect(() => {
+        const tokenString = getToken();
+        const token = JSON.parse(tokenString);
+        if (!token || token.status !== 'USER_LOGGED') {
+            navigate('/');
+        }
+    }, [getToken, navigate]);
 
     const fetchUser = async (id) => {
         try {

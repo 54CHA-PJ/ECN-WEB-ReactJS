@@ -10,17 +10,18 @@ const Home = () => {
     useEffect(() => {
         const tokenString = getToken();
         const token = JSON.parse(tokenString);
-        if (token.status !== 'USER_LOGGED') {
+        if (!token || token.status !== 'USER_LOGGED') {
             navigate('/');
         }
     }, [getToken, navigate]);
 
     const tokenString = getToken();
     const token = JSON.parse(tokenString);
+    const name = token? token.login : 'Unknown User';
 
     return (
         <div className="container mt-5 mb-5">
-            <h1 className="mb-5 text-center title_consolas">Welcome, {token.login}</h1>
+            <h1 className="mb-5 text-center title_consolas">Welcome, {name}</h1>
             <div className="card" style={{ backgroundColor: '#f0f3e0' }}>
                 <div className="card-body">
                     <p className="text-justify">

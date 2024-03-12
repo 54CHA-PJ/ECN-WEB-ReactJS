@@ -80,15 +80,6 @@ $hover-color: #dfeba5;
     border-color: $btn-action-hover !important;
 }
 
-.btn-light-primary {
-    background-color: $btn-action!important;
-    border-color: $btn-action !important;
-}
-
-.btn-light-primary:hover {
-    background-color: $btn-action-hover !important;
-    border-color: $btn-action-hover !important;
-}
 
 .btn-warning {
     background-color: $btn-red !important;
@@ -114,6 +105,8 @@ $hover-color: #dfeba5;
     align-items: center;
 }
 
+// ICONS
+
 .icon {
     border: none;
     width: 20px;
@@ -123,6 +116,10 @@ $hover-color: #dfeba5;
 .logo {
     width: 30px;
     height: auto;
+}
+
+.actions {
+    text-align: right;
 }
 
 // NAVBAR

@@ -64,16 +64,6 @@
   border-color: #f0d7e1 !important;
 }
 
-.btn-light-primary {
-  background-color: #eec0f1 !important;
-  border-color: #eec0f1 !important;
-}
-
-.btn-light-primary:hover {
-  background-color: #f0d7e1 !important;
-  border-color: #f0d7e1 !important;
-}
-
 .btn-warning {
   background-color: #af0202 !important;
   border-color: #af0202 !important;
@@ -107,6 +97,10 @@
 .logo {
   width: 30px;
   height: auto;
+}
+
+.actions {
+  text-align: right;
 }
 
 .navbar-custom {
