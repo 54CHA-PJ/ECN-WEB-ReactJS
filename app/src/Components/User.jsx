@@ -1,6 +1,6 @@
 import React, { useEffect, useState, useContext } from 'react';
 import { TokenContext } from '../Context/TokenContext';
-import { getServiceData } from '../server/util';
+import { postServiceData } from '../server/util';
 import { useNavigate } from 'react-router-dom';
 import { useParams } from 'react-router-dom'; // Import useParams
 
@@ -20,19 +20,6 @@ const User = () => {
         }
     }, [getToken, navigate]);
 
-    const fetchUser = async (id) => {
-        try {
-            console.log('Fetching user with ID:', id); // Add this line
-            const request = await getServiceData(`user/${id}`);
-            const user = request[0];
-            setUserId(user.person_id || '');
-            setFirstName(user.person_firstname || '');
-            setLastName(user.person_lastname || '');
-        } catch (error) {
-            console.error('Failed to fetch user:', error);
-        }
-    };
-
     useEffect(() => {
         fetchUser(id); // Fetch the user with the id from the URL
     }, [id]);
@@ -43,9 +30,46 @@ const User = () => {
         }
     }, [userId, firstName, lastName]);
 
+    const fetchUser = async (id) => {
+        try {
+            console.log('Fetching user with ID:', id); // Add this line
+            const request = await postServiceData(`user/${id}`);
+            const user = request[0];
+            setUserId(user.person_id || '');
+            setFirstName(user.person_firstname || '');
+            setLastName(user.person_lastname || '');
+        } catch (error) {
+            console.error('Failed to fetch user:', error);
+        }
+    };
+
+    const updateUser = async () => {
+        var params = {
+            person_id: userId,
+            person_lastname: lastName,
+            person_firstname: firstName
+        };
+        try {
+            const updateResponse = await postServiceData("updateUser", params);
+            if (updateResponse && updateResponse.ok == 'SUCCESS') {
+                navigate('/users');
+                //alert('Update was successful');
+                return true;
+            }
+            else {
+                throw new Error('Update failed');
+            }
+        } catch (error) {
+            console.error('Error updating user:', error);
+            throw error;
+        }
+    };
+    
     const handleSubmit = (event) => {
         event.preventDefault();
-        // Handle form submission here
+        updateUser().catch((error) => {
+            alert('There was an error deleting the user: ' + error.message);
+        });
     };
 
     return (

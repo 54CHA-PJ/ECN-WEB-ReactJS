@@ -1,11 +1,11 @@
 import React, { useEffect, useState, useContext } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { TokenContext } from '../Context/TokenContext';
-import { getServiceData } from '../server/util';
+import { postServiceData } from '../server/util';
 
 const fetchUsers = async (setUsersFunc) => {
     try {
-        const data = await getServiceData('users');
+        const data = await postServiceData('users');
         if (Array.isArray(data)) {
             setUsersFunc(data);
         } else {
@@ -22,7 +22,6 @@ const Users = () => {
     const [users, setUsers] = useState([]); 
 
     useEffect(() => {
-        // Token check
         const token = getToken();
         if (!token) {
             navigate('/');
@@ -30,7 +29,6 @@ const Users = () => {
     }, [getToken, navigate]);
 
     useEffect(() => {
-        // Call the async function
         fetchUsers(setUsers);
     }, []);
 
