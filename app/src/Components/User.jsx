@@ -1,6 +1,6 @@
 import React, { useEffect, useState, useContext } from 'react';
 import { TokenContext } from '../Context/TokenContext';
-import { postServiceData } from '../server/util';
+import { postServiceData, formatDate, stringToDate } from '../server/util';
 import { useNavigate } from 'react-router-dom';
 import { useParams } from 'react-router-dom'; // Import useParams
 
@@ -9,6 +9,7 @@ const User = () => {
     const [userId, setUserId] = useState('');
     const [firstName, setFirstName] = useState('');
     const [lastName, setLastName] = useState('');
+    const [birthDate, setBirthDate] = useState(''); 
     const { getToken } = useContext(TokenContext);
     const { id } = useParams(); // Get the id from the URL
 
@@ -16,13 +17,12 @@ const User = () => {
         const tokenString = getToken();
         const token = JSON.parse(tokenString);
         if (!token || token.status !== 'USER_LOGGED') {
-            navigate('/');
+            navigate('/'); // Go to the login page
         }
-    }, [getToken, navigate]);
-
-    useEffect(() => {
-        fetchUser(id); // Fetch the user with the id from the URL
-    }, [id]);
+        else {
+            fetchUser(id); // Fetch the user with the id from the URL
+        }
+    }, [getToken, navigate, id]);
 
     useEffect(() => {
         if (userId && firstName && lastName) {
@@ -38,6 +38,7 @@ const User = () => {
             setUserId(user.person_id || '');
             setFirstName(user.person_firstname || '');
             setLastName(user.person_lastname || '');
+            setBirthDate(formatDate(user.person_birthdate) || '');
         } catch (error) {
             console.error('Failed to fetch user:', error);
         }
@@ -47,13 +48,13 @@ const User = () => {
         var params = {
             person_id: userId,
             person_lastname: lastName,
-            person_firstname: firstName
+            person_firstname: firstName,
+            person_birthdate: stringToDate(birthDate) 
         };
         try {
             const updateResponse = await postServiceData("updateUser", params);
-            if (updateResponse && updateResponse.ok == 'SUCCESS') {
+            if (updateResponse && updateResponse.ok === 'SUCCESS') {
                 navigate('/users');
-                //alert('Update was successful');
                 return true;
             }
             else {
@@ -89,6 +90,10 @@ const User = () => {
                         <div className="form-group">
                             <label htmlFor="lastName">Last Name:</label>
                             <input type="text" id="lastName" className="form-control" value={lastName} onChange={e => setLastName(e.target.value)} />
+                        </div>
+                        <div className="form-group">
+                            <label htmlFor="lastName">Birth Date:</label>
+                            <input type="text" id="lastName" className="form-control" value={birthDate} onChange={e => setBirthDate(e.target.value)} />
                         </div>
                         <div className="d-flex justify-content-center ">
                             <button 

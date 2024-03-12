@@ -1,13 +1,13 @@
 import React, { useEffect, useState, useContext } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { TokenContext } from '../Context/TokenContext';
-import { postServiceData, formatDate } from '../server/util';
+import { postServiceData } from '../server/util';
 
-const fetchUsers = async (setUsersFunc) => {
+const fetchBooks = async (setBooksFunc) => {
     try {
-        const data = await postServiceData('users');
+        const data = await postServiceData('books');
         if (Array.isArray(data)) {
-            setUsersFunc(data);
+            setBooksFunc(data);
         } else {
             console.error('Unexpected server response:', data);
         }
@@ -16,9 +16,9 @@ const fetchUsers = async (setUsersFunc) => {
     }
 };
 
-const deleteUser = async (userId) => {
+const deleteBook = async (bookId) => {
     try {
-        const deleteResponse = await postServiceData("deleteUser", { person_id: userId });
+        const deleteResponse = await postServiceData("deleteBook", { book_id: bookId });
         if (deleteResponse && deleteResponse.ok === 'SUCCESS') {
             return true;
         }
@@ -26,15 +26,15 @@ const deleteUser = async (userId) => {
             throw new Error('Delete failed');
         }
     } catch (error) {
-        console.error('Error deleting user:', error);
+        console.error('Error deleting book:', error);
         throw error;
     }
 }
 
-const Users = () => {
+const Books = () => {
     const navigate = useNavigate();
     const { getToken } = useContext(TokenContext);
-    const [users, setUsers] = useState([]); 
+    const [books, setBooks] = useState([]); 
 
     useEffect(() => {
         const token = getToken();
@@ -44,22 +44,22 @@ const Users = () => {
     }, [getToken, navigate]);
 
     useEffect(() => {
-        fetchUsers(setUsers);
+        fetchBooks(setBooks);
     }, []);
 
-    const refreshUsers = () => fetchUsers(setUsers);
+    const refreshBooks = () => fetchBooks(setBooks);
 
-    const handleDelete = async (userId) => {
-        const confirmDelete = window.confirm('Are you sure you want to delete this user?');
+    const handleDelete = async (bookId) => {
+        const confirmDelete = window.confirm('Are you sure you want to delete this book?');
         if (confirmDelete) {
-            await deleteUser(userId);
-            refreshUsers();
+            await deleteBook(bookId);
+            refreshBooks();
         }
     }
 
     return (
         <div className="container mt-5">
-            <h1 className="mb-5 text-center title_consolas">User Database</h1>
+            <h1 className="mb-5 text-center title_consolas">Book Database</h1>
             <div className="card">
                 <div className="card-body">
                     <table className="table table-striped">
@@ -67,21 +67,21 @@ const Users = () => {
                         <tr>
                             <th>ID</th>
                             <th>Name</th>
-                            <th>Birthdate</th>
+                            <th>Author(s)</th>
                             <th className="actions">Actions</th>
                         </tr>
                     </thead>
                     <tbody>
-                        {users.map(user => (
-                            <tr key={user.person_id}>
-                                <td>{user.person_id}</td>
-                                <td>{user.person_firstname} {user.person_lastname}</td>
-                                <td>{formatDate(user.person_birthdate) || 'N/A'}</td>
+                        {books.map(book => (
+                            <tr key={book.book_id}>
+                                <td>{book.book_id}</td>
+                                <td>{book.book_title}</td>
+                                <td>{book.book_authors} </td>
                                 <td className="actions">
                                     <button 
                                         type="submit" 
                                         className="btn btn-light-primary mr-2"
-                                        onClick={() => navigate(`/user/${user.person_id}`)}
+                                        onClick={() => navigate(`/book/${book.book_id}`)}
                                     >
                                         <img 
                                             className="icon"
@@ -92,7 +92,7 @@ const Users = () => {
                                     <button 
                                         type="submit" 
                                         className="btn btn-light-primary"
-                                        onClick={() => handleDelete(user.person_id)}
+                                        onClick={() => handleDelete(book.book_id)}
                                     >
                                         <img 
                                             className="icon"
@@ -111,4 +111,4 @@ const Users = () => {
     );    
 }
 
-export default Users;
+export default Books;
