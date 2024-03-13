@@ -2,7 +2,7 @@ import React, { useEffect, useState, useContext } from 'react';
 import { TokenContext } from '../Context/TokenContext';
 import { postServiceData, formatDate, stringToDate } from '../server/util';
 import { useNavigate } from 'react-router-dom';
-import { useParams } from 'react-router-dom'; // Import useParams
+import { useParams } from 'react-router-dom'; 
 
 const User = () => {
     const navigate = useNavigate();
@@ -17,22 +17,15 @@ const User = () => {
         const tokenString = getToken();
         const token = JSON.parse(tokenString);
         if (!token || token.status !== 'USER_LOGGED') {
-            navigate('/'); // Go to the login page
+            navigate('/');
         }
         else {
-            fetchUser(id); // Fetch the user with the id from the URL
+            fetchUser(id);
         }
     }, [getToken, navigate, id]);
 
-    useEffect(() => {
-        if (userId && firstName && lastName) {
-            console.log('USER: (' + userId + ', ' + firstName + ', ' + lastName + ')' );
-        }
-    }, [userId, firstName, lastName]);
-
     const fetchUser = async (id) => {
         try {
-            console.log('Fetching user with ID:', id); // Add this line
             const request = await postServiceData(`user/${id}`);
             const user = request[0];
             setUserId(user.person_id || '');
@@ -54,6 +47,7 @@ const User = () => {
         try {
             const updateResponse = await postServiceData("updateUser", params);
             if (updateResponse && updateResponse.ok === 'SUCCESS') {
+                console.log('USER: (' + userId + ', ' + firstName + ', ' + lastName + ')' );
                 navigate('/users');
                 return true;
             }

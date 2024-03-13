@@ -45,9 +45,9 @@ const postSQLResult = (req, res, sqlRequest, values) => {
           console.log("Bad request", err);
           res.status(500).end('Bad Request Error!');  
         } else{
-          const jsonResp = {ok:'SUCCESS'}
+          const results = {ok:'SUCCESS', data:result.rows};
           res.setHeader('Content-Type', 'application/json');
-          res.send(JSON.stringify(jsonResp));
+          res.send(JSON.stringify(results));
         }
         client.end();
       })
@@ -112,12 +112,11 @@ app.post("/updateUser", function (req,res){
 
 // CREATE an user
 app.post("/createUser", function (req,res){
-  var sqlRequest = "INSERT INTO person(person_firstname, person_lastname, person_birthdate, person_id) VALUES($1,$2,$3,$4) RETURNING person_id;";
+  var sqlRequest = "INSERT INTO person(person_firstname, person_lastname, person_birthdate) VALUES($1,$2,$3) RETURNING person_id;";
   var values = [];
   values.push(req.body.person_firstname);
   values.push(req.body.person_lastname);
   values.push(req.body.person_birthdate);
-  values.push(req.body.person_id);
   postSQLResult(req,res,sqlRequest,values)
 });
 

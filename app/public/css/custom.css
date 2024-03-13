@@ -6,6 +6,8 @@
   font-family: Monaco, monospace;
   color: #820bad;
   color: #e6dcdc;
+  margin: 0;
+  text-align: center;
 }
 
 .tight-container {

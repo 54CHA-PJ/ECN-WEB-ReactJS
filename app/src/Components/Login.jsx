@@ -13,7 +13,6 @@ const Login = () => {
         const tokenString = getToken();
         const token = JSON.parse(tokenString);
         if (token && token.status === 'USER_LOGGED') {
-            // If the user is already logged in, redirect to home
             navigate('/home');
         }
     }, [getToken, navigate, removeToken]);

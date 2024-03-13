@@ -2,7 +2,7 @@ import React, { useEffect, useState, useContext } from 'react';
 import { TokenContext } from '../Context/TokenContext';
 import { postServiceData } from '../server/util';
 import { useNavigate } from 'react-router-dom';
-import { useParams } from 'react-router-dom'; // Import useParams
+import { useParams } from 'react-router-dom';
 
 const Book = () => {
     const navigate = useNavigate();
@@ -16,22 +16,15 @@ const Book = () => {
         const tokenString = getToken();
         const token = JSON.parse(tokenString);
         if (!token || token.status !== 'USER_LOGGED') {
-            navigate('/'); // Go to the login page
+            navigate('/'); 
         }
         else {
-            fetchBook(id); // Fetch the book with the id from the URL
+            fetchBook(id);
         }
     }, [getToken, navigate, id]);
 
-    useEffect(() => {
-        if (bookId && bookTitle && bookAuthors) {
-            console.log('USER: (' + bookId + ', ' + bookTitle + ', ' + bookAuthors + ')' );
-        }
-    }, [bookId, bookTitle, bookAuthors]);
-
     const fetchBook = async (id) => {
         try {
-            console.log('Fetching book with ID:', id); // Add this line
             const request = await postServiceData(`book/${id}`);
             const book = request[0];
             setBookId(book.book_id || '');
@@ -51,8 +44,8 @@ const Book = () => {
         try {
             const updateResponse = await postServiceData("updateBook", params);
             if (updateResponse && updateResponse.ok === 'SUCCESS') {
+                console.log('BOOK: (' + bookId + ', ' + bookTitle + ', ' + bookAuthors + ')' );
                 navigate('/books');
-                //alert('Update was successful');
                 return true;
             }
             else {
@@ -82,11 +75,11 @@ const Book = () => {
                             <input type="text" id="bookId" className="form-control" value={bookId} readOnly />
                         </div>
                         <div className="form-group">
-                            <label htmlFor="bookTitle">First Name:</label>
+                            <label htmlFor="bookTitle">Title:</label>
                             <input type="text" id="bookTitle" className="form-control" value={bookTitle} onChange={e => setBookTitle(e.target.value)} />
                         </div>
                         <div className="form-group">
-                            <label htmlFor="bookAuthors">Last Name:</label>
+                            <label htmlFor="bookAuthors">Author(s):</label>
                             <input type="text" id="bookAuthors" className="form-control" value={bookAuthors} onChange={e => setBookAuthors(e.target.value)} />
                         </div>
                         <div className="d-flex justify-content-center ">

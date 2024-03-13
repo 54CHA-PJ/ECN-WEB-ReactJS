@@ -1,35 +1,7 @@
 import React, { useEffect, useState, useContext } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { TokenContext } from '../Context/TokenContext';
-import { postServiceData, formatDate } from '../server/util';
-
-const fetchUsers = async (setUsersFunc) => {
-    try {
-        const data = await postServiceData('users');
-        if (Array.isArray(data)) {
-            setUsersFunc(data);
-        } else {
-            console.error('Unexpected server response:', data);
-        }
-    } catch (error) {
-        console.error(error);
-    }
-};
-
-const deleteUser = async (userId) => {
-    try {
-        const deleteResponse = await postServiceData("deleteUser", { person_id: userId });
-        if (deleteResponse && deleteResponse.ok === 'SUCCESS') {
-            return true;
-        }
-        else {
-            throw new Error('Delete failed');
-        }
-    } catch (error) {
-        console.error('Error deleting user:', error);
-        throw error;
-    }
-}
+import { postServiceData, formatDate, stringToDate } from '../server/util';
 
 const Users = () => {
     const navigate = useNavigate();
@@ -47,6 +19,51 @@ const Users = () => {
         fetchUsers(setUsers);
     }, []);
 
+    const fetchUsers = async (setUsersFunc) => {
+        try {
+            const data = await postServiceData('users');
+            if (Array.isArray(data)) {
+                setUsersFunc(data);
+            } else {
+                console.error('Unexpected server response:', data);
+            }
+        } catch (error) {
+            console.error(error);
+        }
+    };
+    
+    const deleteUser = async (userId) => {
+        try {
+            const deleteResponse = await postServiceData("deleteUser", { person_id: userId });
+            if (deleteResponse && deleteResponse.ok === 'SUCCESS') {
+                return true;
+            }
+            else {
+                throw new Error('Delete failed');
+            }
+        } catch (error) {
+            console.error('Error deleting user:', error);
+            throw error;
+        }
+    }
+    
+    const createUser = async () => {
+        const params = {
+            person_firstname: '',
+            person_lastname: '',
+            person_birthdate: stringToDate('01/01/1970')
+        };
+        try {
+            const response = await postServiceData('createUser', params);
+            if (response) {
+                const new_id = (response.data)[0].person_id;
+                console.log('USER CREATED:', new_id);
+                navigate(`/user/${new_id}`);
+            }
+        } catch (error) {
+            console.error('Error creating user:', error);
+        }
+    };
     const refreshUsers = () => fetchUsers(setUsers);
 
     const handleDelete = async (userId) => {
@@ -59,7 +76,15 @@ const Users = () => {
 
     return (
         <div className="container mt-5">
-            <h1 className="mb-5 text-center title_consolas">User Database</h1>
+        <div className="d-flex flex-column align-items-center justify-content-center mb-5">
+            <h1 className="text-center title_consolas mb-5">User Database</h1>
+            <button 
+                type="button" 
+                className="btn btn-success" 
+                onClick={createUser}> 
+                Create a new User
+                </button>
+            </div>
             <div className="card">
                 <div className="card-body">
                     <table className="table table-striped">

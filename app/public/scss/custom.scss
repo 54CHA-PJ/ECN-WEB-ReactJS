@@ -23,6 +23,8 @@ $hover-color: #dfeba5;
     font-family: Monaco, monospace;
     color: $primary-color;
     color: $title-color;
+    margin: 0;
+    text-align: center;
 }
 
 .tight-container {
@@ -84,19 +86,19 @@ $hover-color: #dfeba5;
 .btn-warning {
     background-color: $btn-red !important;
     border-color: $btn-red !important;
-    color: #fff !important; // Add this line
+    color: #fff !important; 
 }
 
 .btn-warning:hover {
     background-color: $btn-yellow !important;
     border-color: $btn-yellow !important;
-    color: #000000 !important; // Add this line
+    color: #000000 !important; 
 }
 
 .btn-success {
     background-color: $btn-green !important;
     border-color: $btn-green !important;
-    color: #fff !important; // Add this line
+    color: #fff !important; 
 }
 
 .list-group-item {

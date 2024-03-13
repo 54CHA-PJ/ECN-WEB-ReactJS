@@ -8,5 +8,5 @@ function validateForm(event) {
         alert('Invalid username or password');
     }
 
-    event.preventDefault(); // Prevent the form from submitting
+    event.preventDefault();
 }
