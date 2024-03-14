@@ -5,6 +5,8 @@ import Home from './Home';
 import Navbar from './Navbar'; 
 import Users from './Users';
 import User from './User';
+import UserBooks from './UserBooks';
+import Borrow from './Borrow';
 import Book from './Book';
 import Books from './Books';
 import Borrows from './Borrows';
@@ -34,7 +36,7 @@ function AppRoutes() {
   }, [getToken]);
 
   const location = useLocation();
-  const validPathNames = ["/home", "/users", "/user", "/books", "/book", "/borrows"]
+  const validPathNames = ["/home", "/users", "/user", "/books", "/book", "/borrows", "/borrow", "/userBooks"]
   const showNavbar = validPathNames.some(path => location.pathname.startsWith(path));
 
   return (
@@ -45,9 +47,11 @@ function AppRoutes() {
         <Route exact path="/home" element={<Home/>} />
         <Route exact path="/users" element={<Users/>} />
         <Route exact path="/user/:id" element={<User/>} />
+        <Route exact path="/userBooks" element={<UserBooks/>} />
         <Route exact path="/books" element={<Books/>} />
         <Route exact path="/book/:id" element={<Book/>} />
         <Route exact path="/borrows" element={<Borrows/>} />
+        <Route exact path="/borrow" element={<Borrow/>} />
         <Route path="*" element={<NotFound/>} />
       </Routes>
     </>

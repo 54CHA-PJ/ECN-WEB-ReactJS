@@ -1,63 +1,67 @@
-# NPM Commands
+# PRWEB : ReactJS + NodeJS + PostgreSQL
 
--------------------
-## Webpage
--------------------
+----------------------------
+## Database Structure
 
-### Start
-```bash
-npm start
-```
+### person
+* person_id: integer (primary key) (auto increment)
+* person_firstname: varchar
+* person_lastname: varchar
+* person_birthdate: date
 
-### SASS
-```bash
-npm run sass
-```
+### book
+* book_id: integer (primary key) (auto increment)
+* book_title: varchar
+* book_authors: varchar
 
--------------------
-## SERVER
--------------------
+### borrow
+* person_id: integer (foreign key) 
+* book_id: integer (foreign key)
+* borrow_date: date
+* return_date: date
 
-### Start
-```bash
-nodemon server.js
-```
+----------------------------
+## Database Routes
 
--------------------
-## NPM - NOTES
--------------------
+* Authentication : /authenticate
 
-### Which package depends on tar
-```bash	
-npm ls tar
-```
+* Books : /books
+* Book(id): /book/:id
+* CREATE a book : /createBook
+* DELETE a book : /deleteBook
+* UPDATE a book : /updateBook
 
-### Install latest version
-```bash
-npm install tar@latest
-```
+* Borrows : /borrows
+* CREATE a borrow : /createBorrow
+* DELETE a borrow : /deleteBorrow
+* UPDATE a borrow : /updateBorrow
 
-### Start the app
-```bash
-npm start
-```
+* GET Users : /users
+* GET User(id): /user/:id
+* CREATE a user : /createUser
+* DELETE a user : /deleteUser
+* UPDATE a user : /updateUser
 
-### Fix vulnerabilities
-```bash
-npm audit fix --force
-```
+* GET all books that are returned : /availableBooks
 
-### REINSTALL
-    
-```bash
-del node_modules
-del package-lock.json
-npm install
-```
+* User's borrowed Books : /userBooks/:id
+* Borrow a book : /borrowBook
+* Return a book : /returnBook
 
-### Misc
-```bash
-npm run test
-npm run build
-npm run eject
-```
+----------------------------
+## Commands
+
+`npm start` - Start the app
+`npm run sass` - Start SASS (refresh with Ctrl+S)
+`nodemon server.js` - Start the server (refresh with Ctrl+S)
+
+----------------------------
+## Creative choices
+
+- No classes. Hooks and functions (React > 17)
+- Token is a cookie that stays in local storage (not session storage) even after the browser is closed
+- Book borrow and return are done from home page (not borrows page, it's just a registry)
+
+USER BOOKS
+- User specific books are accessed from the home page (My books) 
+- 01/01/1970 is the default date for NULL date

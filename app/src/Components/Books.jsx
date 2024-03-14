@@ -13,8 +13,11 @@ const Books = () => {
         if (!token) {
             navigate('/');
         }
+    
+        const refreshBooks = () => fetchBooks(setBooks);
+    
         refreshBooks();
-    }, [getToken, navigate]);
+    }, [getToken, navigate, setBooks]);
 
     const refreshBooks = () => fetchBooks(setBooks);
 

@@ -30,7 +30,9 @@ const Login = () => {
         const params = {login: login, password: pass};
         const data = await postServiceData("authenticate", params);
         if (data.ok === 'SUCCESS') {
-            const token = JSON.stringify({login: login, status:'USER_LOGGED' });
+            const token = JSON.stringify({login: login, status:'USER_LOGGED', id:1 });
+            // TODO : ID is fixed to 1, it should be the user id from the database
+            // TODO : token status should depend on the user role
             setToken(token); 
             navigate('/home'); 
         } else {

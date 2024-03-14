@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useContext } from 'react';
+import React, { useEffect, useState, useContext, useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { TokenContext } from '../Context/TokenContext';
 import { postServiceData, formatDate, stringToDate } from '../server/util';
@@ -6,36 +6,35 @@ import { postServiceData, formatDate, stringToDate } from '../server/util';
 const Users = () => {
     const navigate = useNavigate();
     const { getToken } = useContext(TokenContext);
-    const [users, setUsers] = useState([]); 
+    const [users, setUsers] = useState([]);
 
-    useEffect(() => {
-        const token = getToken();
-        if (!token) {
-            navigate('/');
-        }
-    }, [getToken, navigate]);
-
-    useEffect(() => {
-        fetchUsers(setUsers);
-    }, []);
-
-    const fetchUsers = async (setUsersFunc) => {
+    const fetchUsers = useCallback(async () => {
         try {
             const data = await postServiceData('users');
             if (Array.isArray(data)) {
-                setUsersFunc(data);
+                setUsers(data);
             } else {
                 console.error('Unexpected server response:', data);
             }
         } catch (error) {
             console.error(error);
         }
-    };
-    
+    }, []);
+
+    useEffect(() => {
+        const token = getToken();
+        if (!token) {
+            navigate('/');
+        }
+
+        fetchUsers();
+    }, [getToken, navigate, fetchUsers]);
+
     const deleteUser = async (userId) => {
         try {
             const deleteResponse = await postServiceData("deleteUser", { person_id: userId });
             if (deleteResponse && deleteResponse.ok === 'SUCCESS') {
+                fetchUsers(); // Refresh users after successful delete
                 return true;
             }
             else {
@@ -46,7 +45,7 @@ const Users = () => {
             throw error;
         }
     }
-    
+
     const createUser = async () => {
         const params = {
             person_firstname: '',
@@ -59,6 +58,7 @@ const Users = () => {
                 const new_id = (response.data)[0].person_id;
                 console.log('USER CREATED:', new_id);
                 navigate(`/user/${new_id}`);
+                fetchUsers(); // Refresh users after successful create
             }
         } catch (error) {
             console.error('Error creating user:', error);

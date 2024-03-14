@@ -219,6 +219,52 @@ app.post("/deleteBorrow", function (req,res){
   postSQLResult(req,res,sqlRequest,values)
 });
 
+// ----- LOGGED USER SPECIFIC FUNCTIONS -----
+
+// GET all borrows of a user
+app.post('/userBooks/:id', (req, res) => {
+  var sqlRequest = 'SELECT * FROM borrow NATURAL JOIN book NATURAL JOIN person WHERE person.person_id = $1 ORDER BY borrow_date DESC, book_title;';
+  var values = [req.params.id];
+  getSQLResult(req, res, sqlRequest, values);
+});
+
+// GET all available books (return_date IS NOT NULL)
+app.post('/availableBooks', (req, res) => {
+  var sqlRequest = `
+    SELECT book.book_id, book.book_title, book.book_authors 
+    FROM book 
+    WHERE book.book_id NOT IN (
+      SELECT borrow.book_id 
+      FROM borrow 
+      WHERE borrow.return_date IS NULL
+    )
+    ORDER BY book.book_title ASC;
+  `;
+  var values = [];
+  getSQLResult(req, res, sqlRequest, values);
+});
+
+// Borow a book
+app.post("/borrowBook", function (req,res){
+  var sqlRequest = "INSERT INTO borrow(person_id, book_id, borrow_date) VALUES($1,$2,$3);";
+  var values = [];
+  values.push(req.body.person_id);
+  values.push(req.body.book_id);
+  values.push(req.body.borrow_date);
+  postSQLResult(req,res,sqlRequest,values)
+});
+
+// Return a book
+app.post("/returnBook", function (req,res){
+  var sqlRequest = `UPDATE borrow SET return_date = $1 WHERE person_id = $2 AND book_id = $3 AND borrow_date = $4; `;
+  var values = [];
+  values.push(req.body.return_date);
+  values.push(req.body.person_id);
+  values.push(req.body.book_id);
+  values.push(req.body.borrow_date);
+  postSQLResult(req,res,sqlRequest,values)
+});
+
 // Must be LAST instruction of the file
 // Listen to port 8000
 app.listen(8000, () => {
