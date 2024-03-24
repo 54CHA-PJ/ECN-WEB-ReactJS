@@ -8,12 +8,12 @@ var conString = process.env.DB_CONNECTION;
 
 // DB FUNCTIONS
 
-function getSQLResult(req,res,sqlRequest,values, callback){
+function getSQLResult(req,res,sqlRequest,values){
   var client = new pg.Client(conString);
   client.connect(function(err){
     if(err){
-      console.log("Failed to connect to postgres");
-      res.status(500).end('Database Connection!'); 
+      console.log("Failled to connect to postgres");
+      res.status(500).end('Database Connection Error!'); 
     } else{
       client.query(sqlRequest,values, function(err,result){
         if(err){
@@ -24,8 +24,8 @@ function getSQLResult(req,res,sqlRequest,values, callback){
           for (let index in result.rows) {
             results.push(result.rows[index]);
           }
-          // Call the callback with the results
-          callback(null, results);
+          res.setHeader('Content-Type', 'application/json');
+          res.send(JSON.stringify(results));
         }
         client.end();
       })
@@ -75,25 +75,14 @@ app.use(function(req, res, next) {
 });
 
 // Authentication
-// login is in the form of "firstname.lastname"
-// password is a string
 app.post('/authenticate', (req, res) => {
-  const login = req.body.login.split('.'); //split login into firstname and lastname
-  const firstname = login[0];
-  const lastname = login[1];
+  const login = req.body.login;
   const password = req.body.password;
-  var sqlRequest = 'SELECT person_id, person_firstname FROM person WHERE person_firstname = $1 AND person_lastname = $2 AND person_pwd = $3';
-  var values = [firstname, lastname, password];
-  getSQLResult(req, res, sqlRequest, values, (err, result) => {
-    if (err) {
-      res.status(500).send({ok: 'ERROR'});
-    } else {
-      const isAuthenticated = result.length > 0;
-      const response = isAuthenticated ? {ok:'SUCCESS', person: result[0]} : {ok:'INVALID'};
-      res.send(response);
-    }
-  });
+  const isAuthenticated = login === "admin" && password === "admin";
+  const response = isAuthenticated ? {ok:'SUCCESS'} : {ok:'INVALID'};
+  res.send(response);
 });
+
 
 // ----- USERS -----
 

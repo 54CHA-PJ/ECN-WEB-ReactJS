@@ -28,23 +28,15 @@ const Login = () => {
     const checkLogin = async (event) => {
         event.preventDefault();
         const params = {login: login, password: pass};
-        console.log("LOGIN : ", params);
-        try {
-            const data = await postServiceData("authenticate", params);
-            console.log(data);
-            if (data.ok === 'SUCCESS') {
-                const token = JSON.stringify({
-                    id: data.person.person_id, 
-                    name: data.person.person_firstname, 
-                    status:'USER_LOGGED'
-                });
-                setToken(token); 
-                navigate('/home'); 
-            } else {
-                alert("Invalid username or password");
-            }
-        } catch (error) {
-            console.error("Error during authentication:", error);
+        const data = await postServiceData("authenticate", params);
+        if (data.ok === 'SUCCESS') {
+            const token = JSON.stringify({login: login, status:'USER_LOGGED', id:1 });
+            // TODO : ID is fixed to 1, it should be the user id from the database
+            // TODO : token status should depend on the user role
+            setToken(token); 
+            navigate('/home'); 
+        } else {
+            alert("Invalid username or password");
         }
     };
     
