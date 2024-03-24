@@ -55,6 +55,31 @@ const postSQLResult = (req, res, sqlRequest, values) => {
   })
 }
 
+// Same as getSQLResult but without sending the results
+function getSQLMuted(req, res, sqlRequest, values, callback) {
+  var client = new pg.Client(conString);
+  client.connect(function(err) {
+      if(err) {
+          console.log("Failed to connect to postgres");
+          res.status(500).end('Database Connection Error!');
+      } else {
+          client.query(sqlRequest, values, function(err, result) {
+              if(err) {
+                  console.log("Bad request", err);
+                  res.status(500).end('Bad Request Error!');
+              } else {
+                  var results = [];
+                  for (let index in result.rows) {
+                      results.push(result.rows[index]);
+                  }
+                  callback(null, results);
+              }
+              client.end();
+          })
+      }
+  })
+}
+
 // APP FUNCTIONS
 
 app.use(express.urlencoded({ extended: true }));
@@ -75,14 +100,25 @@ app.use(function(req, res, next) {
 });
 
 // Authentication
+// login is in the form of "firstname.lastname"
+// password is a string
 app.post('/authenticate', (req, res) => {
-  const login = req.body.login;
+  const login = req.body.login.split('.'); //split login into firstname and lastname
+  const firstname = login[0];
+  const lastname = login[1];
   const password = req.body.password;
-  const isAuthenticated = login === "admin" && password === "admin";
-  const response = isAuthenticated ? {ok:'SUCCESS'} : {ok:'INVALID'};
-  res.send(response);
+  var sqlRequest = 'SELECT person_id, person_firstname FROM person WHERE person_firstname = $1 AND person_lastname = $2 AND person_pwd = $3';
+  var values = [firstname, lastname, password];
+  getSQLMuted(req, res, sqlRequest, values, (err, result) => {
+      if (err) {
+          res.status(500).send({ok: 'ERROR'});
+      } else {
+          const isAuthenticated = result.length > 0;
+          const response = isAuthenticated ? {ok:'SUCCESS', person: result[0]} : {ok:'INVALID'};
+          res.send(response);
+      }
+  });
 });
-
 
 // ----- USERS -----
 
