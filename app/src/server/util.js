@@ -1,24 +1,25 @@
 let server = "http://localhost:8000";
 
-const postServiceData = (method, params) => {
-    return fetch(server + "/" + method, {
-        method: 'POST',
-        headers: {
-            'Accept': 'application/json',
-            'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(params)
-    })
-    .then((response) => 
-        response.json()
-        .then((data) => {
-            return Promise.resolve(data);
-        })
-        .catch (error => {
-            console.log(error);
-            return error;
-        })
-    );
+const postServiceData = async (method, params) => {
+    try {
+        const response = await fetch(server + "/" + method, {
+            method: 'POST',
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(params)
+        });
+
+        if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+        }
+        const data = await response.json();
+        return data;
+    } catch (error) {
+        console.error('Error:', error);
+        return null;
+    }
 }
 
 const stringToDate = (_date) => {

@@ -17,7 +17,7 @@ const Home = () => {
 
     const tokenString = getToken();
     const token = JSON.parse(tokenString);
-    const name = token? token.login : 'Unknown User';
+    const name = token? token.name : 'Unknown User';
 
     return (
         <div className="container mt-5 mb-5">
