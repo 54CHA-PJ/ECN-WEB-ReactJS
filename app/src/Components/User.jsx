@@ -19,6 +19,7 @@ const User = () => {
     const [borrows, setBorrows] = useState([]);
     const [books, setBooks] = useState([]);
     const [bookId, setBookId] = useState('-1');
+    const [password, setPassword] = useState('');
     
     const { getToken } = useContext(TokenContext);
     const { id } = useParams(); // Get the id from the URL
@@ -44,6 +45,7 @@ const User = () => {
             setFirstName(user.person_firstname || '');
             setLastName(user.person_lastname || '');
             setBirthDate(formatDate(user.person_birthdate) || '');
+            setPassword(user.person_pwd || ''); // Ensure that 'person_pwd' is included in the server response
         } catch (error) {
             console.error('Failed to fetch user:', error);
         }
@@ -142,7 +144,8 @@ const User = () => {
             person_id: userId,
             person_lastname: lastName,
             person_firstname: firstName,
-            person_birthdate: stringToDate(birthDate) 
+            person_birthdate: stringToDate(birthDate),
+            person_pwd: password 
         };
         try {
             const updateResponse = await postServiceData("updateUser", params);
@@ -188,6 +191,10 @@ const User = () => {
                         <div className="form-group">
                             <label htmlFor="lastName">Birth Date:</label>
                             <input type="text" id="lastName" className="form-control" value={birthDate} onChange={e => setBirthDate(e.target.value)} />
+                        </div>
+                        <div className="form-group">
+                            <label htmlFor="password">Password:</label>
+                            <input type="text" id="password" className="form-control" value={password} onChange={e => setPassword(e.target.value)} />
                         </div>
                         <div className="d-flex justify-content-center ">
                             <button 

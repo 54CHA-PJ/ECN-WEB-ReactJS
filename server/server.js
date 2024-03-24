@@ -131,7 +131,7 @@ app.post('/users', (req, res) => {
 
 // GET an user by ID (shows password)
 app.post('/user/:id', (req, res) => {
-  var sqlRequest = 'SELECT person_id, person_firstname, person_lastname, person_birthdate FROM person WHERE person_id = $1';
+  var sqlRequest = 'SELECT person_id, person_firstname, person_lastname, person_birthdate, person_pwd FROM person WHERE person_id = $1';
   var values = [req.params.id];
   getSQLResult(req, res, sqlRequest, values);
 });
@@ -237,6 +237,16 @@ app.post("/updateBorrow", function (req,res){
   postSQLResult(req,res,sqlRequest,values)
 });
 
+// DELETE a borrow
+app.post("/deleteBorrow", function (req,res){
+  var sqlRequest = `DELETE FROM borrow WHERE person_id = $1 AND book_id = $2 AND borrow_date = $3; `;
+  var values = [];
+  values.push(req.body.person_id);
+  values.push(req.body.book_id);
+  values.push(req.body.borrow_date);
+  postSQLResult(req,res,sqlRequest,values)
+});
+
 // CREATE a borrow
 app.post("/createBorrow", function (req,res){
   var sqlRequest = "INSERT INTO borrow(person_id, book_id, borrow_date, return_date) VALUES($1,$2,$3,$4);";
@@ -245,16 +255,6 @@ app.post("/createBorrow", function (req,res){
   values.push(req.body.book_id);
   values.push(req.body.borrow_date);
   values.push(req.body.return_date);
-  postSQLResult(req,res,sqlRequest,values)
-});
-
-// DELETE a borrow
-app.post("/deleteBorrow", function (req,res){
-  var sqlRequest = `DELETE FROM borrow WHERE person_id = $1 AND book_id = $2 AND borrow_date = $3; `;
-  var values = [];
-  values.push(req.body.person_id);
-  values.push(req.body.book_id);
-  values.push(req.body.borrow_date);
   postSQLResult(req,res,sqlRequest,values)
 });
 
@@ -267,14 +267,14 @@ app.post('/userBooks/:id', (req, res) => {
   getSQLResult(req, res, sqlRequest, values);
 });
 
-// GET all NON borrows of a user
+// GET all NOT RETURNED borrows of a user
 app.post('/userBorrows/:id', (req, res) => {
   var sqlRequest = 'SELECT * FROM borrow NATURAL JOIN book NATURAL JOIN person WHERE person.person_id = $1 AND return_date IS NULL ORDER BY borrow_date DESC, book_title;';
   var values = [req.params.id];
   getSQLResult(req, res, sqlRequest, values);
 });
 
-// GET all available books (return_date IS NOT NULL)
+// GET all RETURNED books (return_date IS NOT NULL)
 app.post('/availableBooks', (req, res) => {
   var sqlRequest = `
     SELECT book.book_id, book.book_title, book.book_authors 
@@ -290,16 +290,6 @@ app.post('/availableBooks', (req, res) => {
   getSQLResult(req, res, sqlRequest, values);
 });
 
-// Borow a book
-app.post("/borrowBook", function (req,res){
-  var sqlRequest = "INSERT INTO borrow(person_id, book_id, borrow_date) VALUES($1,$2,$3);";
-  var values = [];
-  values.push(req.body.person_id);
-  values.push(req.body.book_id);
-  values.push(req.body.borrow_date);
-  postSQLResult(req,res,sqlRequest,values)
-});
-
 // Return a book
 app.post("/returnBook", function (req,res){
   var sqlRequest = `UPDATE borrow SET return_date = $1 WHERE person_id = $2 AND book_id = $3 AND borrow_date = $4; `;
@@ -310,6 +300,17 @@ app.post("/returnBook", function (req,res){
   values.push(req.body.borrow_date);
   postSQLResult(req,res,sqlRequest,values)
 });
+
+// Borow a book
+app.post("/borrowBook", function (req,res){
+  var sqlRequest = "INSERT INTO borrow(person_id, book_id, borrow_date) VALUES($1,$2,$3);";
+  var values = [];
+  values.push(req.body.person_id);
+  values.push(req.body.book_id);
+  values.push(req.body.borrow_date);
+  postSQLResult(req,res,sqlRequest,values)
+});
+
 
 // Must be LAST instruction of the file
 // Listen to port 8000
