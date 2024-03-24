@@ -214,7 +214,7 @@ app.post("/deleteBook", function (req,res){
 
 // GET all borrows
 app.post('/borrows', (req, res) => {
-  var sqlRequest = 'SELECT * FROM borrow ORDER BY borrow_date DESC';
+  var sqlRequest = 'SELECT * FROM borrow ORDER BY borrow_date DESC, person_id ASC, book_id ASC';
   var values = [];
   getSQLResult(req, res, sqlRequest, values);
 });
