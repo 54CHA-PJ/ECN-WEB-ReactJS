@@ -64,7 +64,7 @@ const Login = () => {
                                 <div className="col-6">
                                     <form onSubmit={handleSubmit}>
                                         <div className="form-group">
-                                            <label htmlFor="login">Username:</label>
+                                            <label htmlFor="login">LOGIN :</label>
                                             <input 
                                                 type="text" 
                                                 id="login" 
@@ -94,6 +94,15 @@ const Login = () => {
                                         </div>
                                     </form>
                                 </div>
+                            </div>
+                        </div>
+                        <div className="card-footer text-muted">
+                            LOGIN = person_firstname.person_lastname <br />
+                            For example: <strong>sacha.cruz</strong><br /><br/>
+                            If you don't have an account, please use the following credentials.<br />
+                            <div className="text-center">
+                                <em>LOGIN = admin.admin <br />
+                                PASSWORD = admin </em><br />
                             </div>
                         </div>
                     </div>

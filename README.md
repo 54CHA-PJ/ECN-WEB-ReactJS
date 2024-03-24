@@ -1,51 +1,65 @@
-# PRWEB : ReactJS + NodeJS + PostgreSQL
+# PRWEB : ReactJS + NodeJS
+### Sacha Cruz
+
+---
+
+**IMPORTANT**
+
+J'ai changé un peu la structure du site car j'avais mal compris l'énoncé des TP, et cela me paraissait plus logique :
+- La page Borrows montre TOUS les emprunts par tous les utilisateurs, c'est un registre
+- La page Home permet d'acceder a la page de "Mes emprunts" et "Emprunter un livre" meme ci la deuxieme fonctionnalité est aussi presente dans la page User
 
 ----------------------------
 ## Database Structure
 
 ### person
-* person_id: integer (primary key) (auto increment)
-* person_firstname: varchar
-* person_lastname: varchar
-* person_birthdate: date
-* person_pwd: varchar (defaults to "12345678")
+* **person_id**: integer (primary key) (auto increment)
+* **person_firstname**: varchar
+* **person_lastname**: varchar
+* **person_birthdate**: date
+* **person_pwd: varchar** (defaults to "12345678")
 
 ### book
-* book_id: integer (primary key) (auto increment)
-* book_title: varchar
-* book_authors: varchar
+* **book_id**: integer (primary key) (auto increment)
+* **book_title**: varchar
+* **book_authors**: varchar
 
 ### borrow
-* person_id: integer (foreign key) 
-* book_id: integer (foreign key)
-* borrow_date: date
-* return_date: date
+* **person_id**: integer (foreign key) 
+* **book_id**: integer (foreign key)
+* **borrow_date**: date
+* **return_date**: date
 
 ----------------------------
 ## Database Routes
 
+LOGIN
 * Authentication : /authenticate
 
+BOOK
 * Books : /books
 * Book(id): /book/:id
 * CREATE a book : /createBook
 * DELETE a book : /deleteBook
 * UPDATE a book : /updateBook
 
+BORROW
 * Borrows : /borrows
 * CREATE a borrow : /createBorrow
 * DELETE a borrow : /deleteBorrow
 * UPDATE a borrow : /updateBorrow
 
+USER
 * GET Users : /users
 * GET User(id): /user/:id
 * CREATE a user : /createUser
 * DELETE a user : /deleteUser
 * UPDATE a user : /updateUser
 
+SPECIAL
 * GET all books that are returned : /availableBooks
-
-* User's borrowed Books : /userBooks/:id
+* User's HISTORY OF   borrowed Books : /userBooks/:id    (shows returned and not returned)
+* User's NOT RETURNED borrowed Books : /userBorrows/:id
 * Borrow a book : /borrowBook
 * Return a book : /returnBook
 
