@@ -8,6 +8,7 @@
 * person_firstname: varchar
 * person_lastname: varchar
 * person_birthdate: date
+* person_pwd: varchar (defaults to "12345678")
 
 ### book
 * book_id: integer (primary key) (auto increment)
