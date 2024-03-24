@@ -15,7 +15,7 @@ function Navbar() {
     };
 
     const token = getToken();
-    const login = JSON.parse(token).login;
+    const name = JSON.parse(token).name;
     const id = JSON.parse(token).id;
 
     return (
@@ -27,7 +27,7 @@ function Navbar() {
                 transform: 'translate(-50%, -50%)',
                 color:'#eec0f1'
                 }}>
-                {"LOGIN : " + login + " // ID : " + id}
+                {"USER : " + name + " // ID : " + id}
             </div>
             <div className="d-flex w-100 justify-content-between">
                 <div className="logo-bg-dark rounded mr-3">

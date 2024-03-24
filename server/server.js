@@ -8,12 +8,12 @@ var conString = process.env.DB_CONNECTION;
 
 // DB FUNCTIONS
 
-function getSQLResult(req,res,sqlRequest,values){
+function getSQLResult(req,res,sqlRequest,values, callback){
   var client = new pg.Client(conString);
   client.connect(function(err){
     if(err){
-      console.log("Failled to connect to postgres");
-      res.status(500).end('Database Connection Error!'); 
+      console.log("Failed to connect to postgres");
+      res.status(500).end('Database Connection!'); 
     } else{
       client.query(sqlRequest,values, function(err,result){
         if(err){
@@ -24,8 +24,8 @@ function getSQLResult(req,res,sqlRequest,values){
           for (let index in result.rows) {
             results.push(result.rows[index]);
           }
-          res.setHeader('Content-Type', 'application/json');
-          res.send(JSON.stringify(results));
+          // Call the callback with the results
+          callback(null, results);
         }
         client.end();
       })
@@ -75,48 +75,62 @@ app.use(function(req, res, next) {
 });
 
 // Authentication
+// login is in the form of "firstname.lastname"
+// password is a string
 app.post('/authenticate', (req, res) => {
-  const login = req.body.login;
+  const login = req.body.login.split('.'); //split login into firstname and lastname
+  const firstname = login[0];
+  const lastname = login[1];
   const password = req.body.password;
-  const isAuthenticated = login === "admin" && password === "admin";
-  const response = isAuthenticated ? {ok:'SUCCESS'} : {ok:'INVALID'};
-  res.send(response);
+  var sqlRequest = 'SELECT person_id, person_firstname FROM person WHERE person_firstname = $1 AND person_lastname = $2 AND person_pwd = $3';
+  var values = [firstname, lastname, password];
+  getSQLResult(req, res, sqlRequest, values, (err, result) => {
+    if (err) {
+      res.status(500).send({ok: 'ERROR'});
+    } else {
+      const isAuthenticated = result.length > 0;
+      const response = isAuthenticated ? {ok:'SUCCESS', person: result[0]} : {ok:'INVALID'};
+      res.send(response);
+    }
+  });
 });
 
 // ----- USERS -----
 
-// GET all users
+// GET all users (not showing password)
 app.post('/users', (req, res) => {
   var sqlRequest = 'SELECT * FROM person ORDER BY person_id ASC';
   var values = [];
   getSQLResult(req, res, sqlRequest, values);
 });
 
-// GET an user by ID
+// GET an user by ID (shows password)
 app.post('/user/:id', (req, res) => {
-  var sqlRequest = 'SELECT * FROM person WHERE person_id = $1';
+  var sqlRequest = 'SELECT person_id, person_firstname, person_lastname, person_birthdate FROM person WHERE person_id = $1';
   var values = [req.params.id];
   getSQLResult(req, res, sqlRequest, values);
 });
 
 // UPDATE an user
 app.post("/updateUser", function (req,res){
-  var sqlRequest = `UPDATE person SET person_firstname = $1, person_lastname = $2, person_birthdate = $3 WHERE person_id = $4; `;
+  var sqlRequest = `UPDATE person SET person_firstname = $1, person_lastname = $2, person_birthdate = $3, person_pwd = $4 WHERE person_id = $5; `;
   var values = [];
   values.push(req.body.person_firstname);
   values.push(req.body.person_lastname);
   values.push(req.body.person_birthdate);
+  values.push(req.body.person_pwd);
   values.push(req.body.person_id);
   postSQLResult(req,res,sqlRequest,values)
 });
 
-// CREATE an user
+// CREATE an user (password is set by default to "12345678")
 app.post("/createUser", function (req,res){
-  var sqlRequest = "INSERT INTO person(person_firstname, person_lastname, person_birthdate) VALUES($1,$2,$3) RETURNING person_id;";
+  var sqlRequest = "INSERT INTO person(person_firstname, person_lastname, person_birthdate, person_pwd) VALUES($1,$2,$3,$4) RETURNING person_id;";
   var values = [];
   values.push(req.body.person_firstname);
   values.push(req.body.person_lastname);
   values.push(req.body.person_birthdate);
+  values.push("12345678")
   postSQLResult(req,res,sqlRequest,values)
 });
 
@@ -224,6 +238,13 @@ app.post("/deleteBorrow", function (req,res){
 // GET all borrows of a user
 app.post('/userBooks/:id', (req, res) => {
   var sqlRequest = 'SELECT * FROM borrow NATURAL JOIN book NATURAL JOIN person WHERE person.person_id = $1 ORDER BY borrow_date DESC, book_title;';
+  var values = [req.params.id];
+  getSQLResult(req, res, sqlRequest, values);
+});
+
+// GET all NON borrows of a user
+app.post('/userBorrows/:id', (req, res) => {
+  var sqlRequest = 'SELECT * FROM borrow NATURAL JOIN book NATURAL JOIN person WHERE person.person_id = $1 AND return_date IS NULL ORDER BY borrow_date DESC, book_title;';
   var values = [req.params.id];
   getSQLResult(req, res, sqlRequest, values);
 });
