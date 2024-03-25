@@ -1,6 +1,6 @@
 import React, { useEffect, useState, useContext } from 'react';
 import { TokenContext } from '../Context/TokenContext';
-import { postServiceData } from '../server/util';
+import { postServiceData, formatDate } from '../server/util';
 import { useNavigate } from 'react-router-dom';
 import { useParams } from 'react-router-dom';
 
@@ -10,7 +10,8 @@ const Book = () => {
     const [bookTitle, setBookTitle] = useState('');
     const [bookAuthors, setBookAuthors] = useState('');
     const { getToken } = useContext(TokenContext);
-    const { id } = useParams(); // Get the id from the URL
+    const [borrows, setBorrows] = useState([]);
+    const { id } = useParams(); 
 
     useEffect(() => {
         const tokenString = getToken();
@@ -20,6 +21,7 @@ const Book = () => {
         }
         else {
             fetchBook(id);
+            fetchBorrows(id);
         }
     }, [getToken, navigate, id]);
 
@@ -32,6 +34,15 @@ const Book = () => {
             setBookAuthors(book.book_authors || '');
         } catch (error) {
             console.error('Failed to fetch book:', error);
+        }
+    };
+
+    const fetchBorrows = async (id) => {
+        try {
+            const request = await postServiceData(`bookRegistry/${id}`);
+            setBorrows(request || []);
+        } catch (error) {
+            console.error('Failed to fetch borrows:', error);
         }
     };
 
@@ -97,9 +108,30 @@ const Book = () => {
                         </div>
                     </form>
                 </div>
-
             </div>
-
+            <h1 className="mt-5 mb-5 text-center title_consolas">Book Borrow Registry</h1>
+            <div className="card mt-5 mb-0">
+                <div className="card-body">
+                    <table className="table table-striped">
+                        <thead>
+                            <tr>
+                                <th scope="col">Borrowed By :</th>
+                                <th scope="col">Borrow Date</th>
+                                <th scope="col">Return Date</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {borrows.map((borrow, index) => (
+                                <tr key={index}>
+                                    <td>{borrow.person_firstname + " " + borrow.person_lastname}</td>
+                                    <td>{formatDate(borrow.borrow_date)}</td>
+                                    <td>{borrow.return_date ? formatDate(borrow.return_date) : "NOT RETURNED"}</td>
+                                </tr>
+                            ))}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
         </div>
     );
 };
