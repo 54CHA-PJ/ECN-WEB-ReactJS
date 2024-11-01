@@ -1,13 +1,5 @@
-# PRWEB : ReactJS + NodeJS
+# WEB Programming : ReactJS + NodeJS
 ### Sacha Cruz
-
----
-
-**IMPORTANT**
-
-J'ai changé un peu la structure du site car j'avais mal compris l'énoncé des TP, et cela me paraissait plus logique :
-- La page Borrows montre TOUS les emprunts par tous les utilisateurs, c'est un registre
-- La page Home permet d'acceder a la page de "Mes emprunts" et "Emprunter un livre" meme ci la deuxieme fonctionnalité est aussi presente dans la page User
 
 ----------------------------
 ## Database Structure
